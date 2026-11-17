@@ -1,0 +1,83 @@
+/* Motion runtime — token-driven, safe by default.
+   Every duration and easing comes from tokens/tokens.css, so switching the
+   design system changes motion too. Reduced motion always wins. */
+
+:root {
+  --motion-scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-scale: 0;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-motion] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Enter: one quiet rise, used once per section. */
+[data-motion="enter"] {
+  opacity: 0;
+  transform: translateY(0.75rem);
+  animation: motion-enter calc(var(--duration-slower) * var(--motion-scale)) var(--ease-entrance) forwards;
+}
+
+[data-motion="fade"] {
+  opacity: 0;
+  animation: motion-fade calc(var(--duration-slow) * var(--motion-scale)) var(--ease-standard) forwards;
+}
+
+[data-motion="enter"][data-delay="1"] { animation-delay: calc(var(--duration-fast) * var(--motion-scale)); }
+[data-motion="enter"][data-delay="2"] { animation-delay: calc(var(--duration-base) * var(--motion-scale)); }
+[data-motion="enter"][data-delay="3"] { animation-delay: calc(var(--duration-slow) * var(--motion-scale)); }
+
+@keyframes motion-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motion-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Micro-interactions: hover lift and press. */
+.motion-lift {
+  transition:
+    transform calc(var(--duration-fast) * var(--motion-scale)) var(--ease-standard),
+    box-shadow calc(var(--duration-fast) * var(--motion-scale)) var(--ease-standard);
+}
+
+.motion-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-3);
+}
+
+.motion-lift:active {
+  transform: translateY(0);
+  transition-duration: calc(var(--duration-instant) * var(--motion-scale));
+}
+
+/* Stagger helper for lists/grids: set --stagger-index on children. */
+.motion-stagger > * {
+  opacity: 0;
+  animation: motion-fade calc(var(--duration-slow) * var(--motion-scale)) var(--ease-standard) forwards;
+  animation-delay: calc(var(--duration-fast) * var(--motion-scale) * var(--stagger-index, 0));
+}
