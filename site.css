@@ -280,6 +280,10 @@ a {
 }
 
 .hero__figure figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
   padding: var(--space-3) var(--space-2) var(--space-1);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -287,23 +291,86 @@ a {
   color: var(--color-text-muted);
 }
 
+/* A five-bar equaliser, sitting quietly next to the recital caption. */
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 0.85rem;
+}
+
+.eq i {
+  display: block;
+  width: 2px;
+  height: 100%;
+  background: var(--color-accent);
+  transform-origin: bottom;
+  animation: eq-bar calc(var(--duration-slower) * 2.2) var(--ease-standard) infinite alternate;
+}
+
+.eq i:nth-child(1) { animation-delay: calc(var(--duration-instant) * -2); }
+.eq i:nth-child(2) { animation-delay: calc(var(--duration-fast) * -1); }
+.eq i:nth-child(3) { animation-delay: calc(var(--duration-base) * -1); }
+.eq i:nth-child(4) { animation-delay: calc(var(--duration-slow) * -0.6); }
+.eq i:nth-child(5) { animation-delay: calc(var(--duration-slow) * -0.3); }
+
+@keyframes eq-bar {
+  from { transform: scaleY(0.18); }
+  to { transform: scaleY(1); }
+}
+
 /* ---------- instrument band ---------- */
 
 .band {
+  overflow: hidden;
   background: var(--color-surface-muted);
   border-block: 1px solid var(--color-border);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 
-.band__inner {
+.band__track {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding-block: var(--space-4);
+  width: max-content;
+  animation: band-scroll 42s linear infinite;
+}
+
+.band:hover .band__track,
+.band.is-idle .band__track {
+  animation-play-state: paused;
+}
+
+.band__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+  padding: var(--space-4) var(--space-6);
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.band__row span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-7);
+}
+
+.band__row span::after {
+  content: "";
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  opacity: 0.7;
+}
+
+@keyframes band-scroll {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* ---------- sections ---------- */
@@ -357,6 +424,14 @@ a {
   color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+  transition:
+    transform calc(var(--duration-fast) * var(--motion-scale)) var(--ease-standard),
+    box-shadow calc(var(--duration-fast) * var(--motion-scale)) var(--ease-standard);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
 }
 
 .card__icon {
@@ -485,6 +560,8 @@ a {
 /* ---------- visit (dark) ---------- */
 
 .section--dark {
+  position: relative;
+  overflow: hidden;
   background: var(--color-surface);
   color: var(--color-text);
 }
@@ -631,5 +708,69 @@ a {
 
   .btn--primary {
     padding-inline: var(--space-4);
+  }
+}
+
+/* ---------- music motion ---------- */
+
+.notes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.note {
+  position: absolute;
+  width: 1.6rem;
+  fill: var(--color-accent);
+  opacity: 0.16;
+  animation: note-float 14s var(--ease-standard) infinite alternate;
+}
+
+.note--1 { left: 8%; bottom: 12%; animation-duration: 16s; }
+.note--2 { left: 46%; top: 14%; width: 1.1rem; animation-duration: 19s; animation-delay: calc(var(--duration-slower) * -4); }
+.note--3 { right: 7%; bottom: 22%; width: 1.3rem; animation-duration: 22s; animation-delay: calc(var(--duration-slower) * -7); }
+
+@keyframes note-float {
+  from { transform: translate3d(0, 0.6rem, 0) rotate(-6deg); }
+  to { transform: translate3d(0.8rem, -1.4rem, 0) rotate(6deg); }
+}
+
+/* Scroll reveal — only when JS is present, so no-JS and crawlers see content. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.1rem);
+  transition:
+    opacity calc(var(--duration-slow) * var(--motion-scale)) var(--ease-entrance),
+    transform calc(var(--duration-slow) * var(--motion-scale)) var(--ease-entrance);
+  transition-delay: calc(var(--reveal-index, 0) * var(--duration-instant) * var(--motion-scale));
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .band__track {
+    animation: none;
+    transform: none;
+  }
+
+  .eq i {
+    animation: none;
+    transform: scaleY(0.55);
+  }
+
+  .note {
+    animation: none;
+    opacity: 0.12;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

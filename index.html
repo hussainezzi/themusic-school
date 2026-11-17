@@ -53,14 +53,22 @@
 
       <figure class="hero__figure" data-motion="fade">
         <img src="assets/recital-violin.jpg" alt="A student playing violin on stage at the Grand Recital '26, NAPA, Karachi" width="640" height="360">
-        <figcaption>Grand Recital '26 · NAPA, Karachi</figcaption>
+        <figcaption>
+          <span>Grand Recital '26 · NAPA, Karachi</span>
+          <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        </figcaption>
       </figure>
     </div>
   </section>
 
-  <div class="band" aria-hidden="true">
-    <div class="shell band__inner">
-      <span>Piano</span><span>Guitar</span><span>Violin</span><span>Sitar</span><span>Tabla</span><span>Singing</span><span>Recorder</span>
+  <div class="band" aria-label="Instruments taught at the school">
+    <div class="band__track">
+      <div class="band__row">
+        <span>Piano</span><span>Guitar</span><span>Violin</span><span>Sitar</span><span>Tabla</span><span>Singing</span><span>Recorder</span>
+      </div>
+      <div class="band__row" aria-hidden="true">
+        <span>Piano</span><span>Guitar</span><span>Violin</span><span>Sitar</span><span>Tabla</span><span>Singing</span><span>Recorder</span>
+      </div>
     </div>
   </div>
 
@@ -189,6 +197,11 @@
   </section>
 
   <section class="section section--dark" id="visit">
+    <div class="notes" aria-hidden="true">
+      <svg class="note note--1" viewBox="0 0 24 32"><ellipse cx="8" cy="26" rx="6" ry="4.5"></ellipse><rect x="12.6" y="4" width="2" height="22"></rect><path d="M14.6 4c4 1.4 6 4 6 8 0-2.4-2.6-3.6-6-4.4z"></path></svg>
+      <svg class="note note--2" viewBox="0 0 24 32"><ellipse cx="8" cy="26" rx="6" ry="4.5"></ellipse><rect x="12.6" y="4" width="2" height="22"></rect><path d="M14.6 4c4 1.4 6 4 6 8 0-2.4-2.6-3.6-6-4.4z"></path></svg>
+      <svg class="note note--3" viewBox="0 0 24 32"><ellipse cx="8" cy="26" rx="6" ry="4.5"></ellipse><rect x="12.6" y="4" width="2" height="22"></rect><path d="M14.6 4c4 1.4 6 4 6 8 0-2.4-2.6-3.6-6-4.4z"></path></svg>
+    </div>
     <div class="shell visit">
       <div class="visit__copy">
         <p class="eyebrow eyebrow--light">Visit</p>
@@ -215,5 +228,6 @@
     <p class="site-footer__note">Lesson photos from the school's own Instagram.</p>
   </div>
 </footer>
+<script src="./site.js" defer></script>
 </body>
 </html>
